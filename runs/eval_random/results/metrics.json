@@ -1,0 +1,7 @@
+{
+  "episodes": 200,
+  "avg_return_per_player": [
+    0.175,
+    -0.175
+  ]
+}

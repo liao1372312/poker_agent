@@ -1,0 +1,36 @@
+env:
+  backend: rlcard
+  env_id: no-limit-holdem
+  num_players: 9
+
+eval:
+  episodes: 50  # Reduced for testing
+  seed: 0
+  show_progress: true
+  save_detailed_logs: true  # Save detailed episode logs for analysis
+
+# 9 seats with working baselines (some may need models/API)
+# For testing, you can temporarily set all to rule_based or random
+seats:
+  - type: rule_based
+    params: { tightness: 0.65, aggression: 0.35, seed: 0 }
+  - type: rule_based
+    params: { tightness: 0.60, aggression: 0.40, seed: 1 }
+  - type: rule_based
+    params: { tightness: 0.70, aggression: 0.30, seed: 2 }
+  - type: rule_based
+    params: { tightness: 0.65, aggression: 0.35, seed: 3 }
+  - type: rule_based
+    params: { tightness: 0.60, aggression: 0.40, seed: 4 }
+  - type: rule_based
+    params: { tightness: 0.70, aggression: 0.30, seed: 5 }
+  - type: rule_based
+    params: { tightness: 0.65, aggression: 0.35, seed: 6 }
+  - type: rule_based
+    params: { tightness: 0.60, aggression: 0.40, seed: 7 }
+  - type: rule_based
+    params: { tightness: 0.70, aggression: 0.30, seed: 8 }
+
+output:
+  root: runs/eval_9players_working_nolimit
+

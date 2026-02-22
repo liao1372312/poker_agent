@@ -1,0 +1,47 @@
+env:
+  backend: rlcard
+  env_id: no-limit-holdem  # No-limit Texas Hold'em
+  num_players: 2  # 2-player game
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+  save_detailed_logs: true
+  # Chip management (like real poker)
+  initial_chips_bb: 100        # Each player starts with 100 BB
+  rebuy_threshold_bb: 10      # Rebuy when chips < 50 BB
+  rebuy_amount_bb: 100        # Rebuy amount: 100 BB
+  track_chips_across_episodes: true  # Track chips across episodes (don't reset)
+
+# 2-player game: CFR vs LLM Fixed-Style Opponent (Calling Station)
+seats:
+  # Player 0: CFR Agent (Counterfactual Regret Minimization)
+  - type: cfr
+    params:
+      game_name: texas_holdem  # Try full 52-card Texas Hold'em
+      game_params:  # Configure universal_poker as 2-player no-limit Texas Hold'em
+        players: 2  # 2 players
+        # Note: universal_poker will be configured with:
+        # - betting: nolimit
+        # - numRounds: 4 (pre-flop, flop, turn, river)
+        # - numHoleCards: 2
+        # - numBoardCards: [0, 3, 1, 1]
+      iterations: 10000  # CFR iterations (more iterations = better strategy, but slower)
+      model_path: null  # Set to path if you have a pre-computed strategy
+      device: cuda  # Use GPU for training (or 'cpu' for CPU, or null for auto-detect)
+      seed: 0
+  
+  # Player 1: LLM Fixed-Style Opponent (Calling Station)
+  - type: llm_fixed_style_opponent
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-5-mini  # GPT-5-mini as specified
+      temperature: 0.7
+      max_tokens: 6000  # High limit for reasoning tokens + response
+      player_style: calling_station  # Fixed style: Calling Station
+      seed: 1
+
+output:
+  root: runs/eval_2players_cfr_vs_llm_opponent_calling_station

@@ -1,0 +1,24 @@
+env:
+  backend: rlcard
+  env_id: limit-holdem
+  num_players: 2
+
+train:
+  episodes: 10000
+  eval_interval: 1000
+  seed: 0
+  show_progress: true
+  save_interval: null  # Set to N to save checkpoints every N episodes
+
+eval:
+  episodes: 100
+  show_progress: false
+
+seats:
+  - type: random
+    params: { seed: 0 }
+  - type: random
+    params: { seed: 1 }
+
+output:
+  root: runs/train_random

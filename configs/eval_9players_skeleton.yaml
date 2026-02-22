@@ -1,0 +1,72 @@
+env:
+  backend: rlcard
+  env_id: limit-holdem
+  num_players: 9
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+
+# 9 seats = 9 "players" in one game.
+# 所有baseline已实现，可以直接运行（部分需要预训练模型或API调用）
+seats:
+  - type: rule_based
+    params: { tightness: 0.65, aggression: 0.35, seed: 0 }
+  - type: ppo
+    params: 
+      algorithm: ppo
+      model_path: null  # Set to path if you have a pre-trained model
+      seed: 1
+  - type: dqn
+    params:
+      algorithm: dqn
+      model_path: null  # Set to path if you have a pre-trained model
+      seed: 2
+  - type: cfr
+    params:
+      game_name: leduc_poker
+      iterations: 1000
+      seed: 3
+  - type: deep_cfr
+    params:
+      game_name: leduc_poker
+      model_path: null  # Set to path if you have a pre-trained model
+      seed: 4
+  - type: llm_only
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      seed: 5
+  - type: llm_heuristic_range
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      seed: 6
+  - type: llm_static_belief
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      seed: 7
+  - type: ours
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      max_tokens: 200
+      memory_size: 100          # Max memories to keep
+      learning_window: 20       # Episodes to analyze for evolution
+      evolution_interval: 10    # Update prompt every N episodes
+      min_episodes_for_evolution: 5
+      seed: 8
+
+output:
+  root: runs/eval_9players_skeleton
+

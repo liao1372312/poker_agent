@@ -1,0 +1,17 @@
+env:
+  backend: rlcard
+  env_id: no-limit-holdem  # No-limit version
+  num_players: 2
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+  save_detailed_logs: true
+
+agents:
+  type: random
+  seed: 0
+
+output:
+  root: runs/eval_random_nolimit

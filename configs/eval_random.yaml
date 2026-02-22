@@ -1,0 +1,19 @@
+env:
+  backend: rlcard
+  env_id: limit-holdem
+  num_players: 2
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+
+seats:
+  - type: random
+    params: { seed: 0 }
+  - type: random
+    params: { seed: 1 }
+
+output:
+  root: runs/eval_random
+

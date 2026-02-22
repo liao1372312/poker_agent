@@ -1,0 +1,83 @@
+env:
+  backend: rlcard
+  env_id: no-limit-holdem  # No-limit version
+  num_players: 9
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+  save_detailed_logs: true
+  # Chip management (like real poker)
+  initial_chips_bb: 100        # Each player starts with 100 BB
+  rebuy_threshold_bb: 0       # Rebuy when chips < 0 (i.e., when out of chips)
+  rebuy_amount_bb: 100        # Rebuy amount: 100 BB
+  track_chips_across_episodes: true  # Track chips across episodes (don't reset)
+
+# 9 seats = 9 "players" in one game.
+# 所有baseline已实现，可以直接运行（部分需要预训练模型或API调用）
+seats:
+  - type: rule_based
+    params: { tightness: 0.65, aggression: 0.35, seed: 0 }
+  - type: ppo
+    params: 
+      algorithm: ppo
+      model_path: null  # Set to path if you have a pre-trained model
+      seed: 1
+  - type: dqn
+    params:
+      algorithm: dqn
+      model_path: null  # Set to path if you have a pre-trained model
+      seed: 2
+  - type: cfr
+    params:
+      game_name: texas_holdem  # Try full 52-card Texas Hold'em (fallback to leduc_poker if not supported)
+      game_params:  # Optional: pass parameters to OpenSpiel game
+        players: 9  # Try to configure for 9 players (may not be supported)
+      iterations: 1000
+      seed: 3
+  - type: deep_cfr
+    params:
+      game_name: texas_holdem  # Try full 52-card Texas Hold'em (fallback to leduc_poker if not supported)
+      game_params:  # Optional: pass parameters to OpenSpiel game
+        players: 9  # Try to configure for 9 players (may not be supported)
+      model_path: null  # Set to path if you have a pre-trained model
+      seed: 4
+  - type: llm_only
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      seed: 5
+  - type: llm_heuristic_range
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      seed: 6
+  - type: llm_static_belief
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      seed: 7
+  - type: ours
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-4.1-mini
+      temperature: 0.7
+      max_tokens: 200
+      # RL settings for prompt selection
+      learning_rate: 0.1        # Q-learning learning rate
+      discount_factor: 0.9      # Q-learning discount factor
+      epsilon: 0.1              # Epsilon-greedy exploration rate
+      epsilon_decay: 0.995      # Epsilon decay per episode
+      epsilon_min: 0.05         # Minimum epsilon
+      seed: 8
+
+output:
+  root: runs/eval_9players_skeleton_nolimit

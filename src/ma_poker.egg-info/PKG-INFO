@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: ma-poker
+Version: 0.1.0
+Summary: Multi-agent poker research scaffold (Texas Hold'em)
+Requires-Python: >=3.10
+Requires-Dist: rlcard>=1.2.0
+Requires-Dist: PyYAML>=6.0.2
+Requires-Dist: numpy>=2.1.0
+Requires-Dist: tqdm>=4.66.4

@@ -1,0 +1,50 @@
+env:
+  backend: rlcard
+  env_id: no-limit-holdem  # No-limit Texas Hold'em
+  num_players: 2  # 2-player game
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+  save_detailed_logs: true
+  # Chip management (like real poker)
+  initial_chips_bb: 100        # Each player starts with 100 BB
+  rebuy_threshold_bb: 0       # Rebuy when chips <= 0
+  rebuy_amount_bb: 100        # Rebuy amount: 100 BB
+  track_chips_across_episodes: true  # Track chips across episodes (don't reset)
+
+# 2-player game: Ours vs LLM Fixed-Style Opponent (TAG)
+seats:
+  # Player 0: Ours Agent (Multi-agent architecture)
+  - type: ours
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-5-mini
+      temperature: 0.7
+      max_tokens: 6000
+      # RL settings for prompt selection
+      learning_rate: 0.1        # Q-learning learning rate
+      discount_factor: 0.9     # Q-learning discount factor
+      epsilon: 0.1             # Epsilon-greedy exploration rate
+      epsilon_decay: 0.995     # Epsilon decay per episode
+      epsilon_min: 0.05        # Minimum epsilon
+      # Belief update settings
+      belief_update_rate: 0.1  # Learning rate for belief updates
+      portrait_update_rate: 0.01  # Learning rate for portrait vector updates
+      seed: 0
+  
+  # Player 1: LLM Fixed-Style Opponent (TAG)
+  - type: llm_fixed_style_opponent
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-5-mini  # GPT-5-mini as specified
+      temperature: 0.7
+      max_tokens: 6000  # High limit for reasoning tokens + response
+      player_style: tag  # Fixed style: Tight-Aggressive
+      seed: 1
+
+output:
+  root: runs/eval_2players_ours_vs_llm_opponent_tag

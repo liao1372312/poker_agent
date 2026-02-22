@@ -1,0 +1,38 @@
+# DeepCFR 专用：使用 limit-holdem 环境，obs 72 维、4 动作，与预训练模型一致。
+# 若用 no-limit-holdem，obs 54 维、6 动作，会导致策略恒定（如一直 all_in）。
+env:
+  backend: rlcard
+  env_id: limit-holdem  # Limit Texas Hold'em — required for DeepCFR (72-dim obs, 4 actions)
+  num_players: 2
+
+eval:
+  episodes: 200
+  seed: 0
+  show_progress: true
+  save_detailed_logs: true
+  initial_chips_bb: 100
+  rebuy_threshold_bb: 10
+  rebuy_amount_bb: 100
+  track_chips_across_episodes: true
+
+seats:
+  - type: cfr
+    params:
+      game_name: limit-holdem
+      iterations: 10000
+      model_path: ./pretrained_models/limit-holdem_gpu_deep_cfr_result/model.pt
+      device: cuda
+      seed: 0
+
+  - type: llm_fixed_style_opponent
+    params:
+      api_url: https://api.vveai.com/v1
+      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      model: gpt-5-mini
+      temperature: 0.7
+      max_tokens: 6000
+      player_style: nit_rock
+      seed: 1
+
+output:
+  root: runs/eval_2players_cfr_vs_llm_opponent_limit_holdem
