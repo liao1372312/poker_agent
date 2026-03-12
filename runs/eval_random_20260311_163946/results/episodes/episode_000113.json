@@ -1,0 +1,206 @@
+{
+  "episode_id": 113,
+  "seed": null,
+  "num_players": 2,
+  "steps": [
+    {
+      "step_id": 0,
+      "current_player": 1,
+      "hand": "S9, DA",
+      "public_cards": "None",
+      "chips_before": {
+        "0": 2,
+        "1": 1
+      },
+      "legal_actions": [
+        "call",
+        "raise",
+        "fold"
+      ],
+      "action_taken": "call",
+      "action_id": 0,
+      "chips_after": {
+        "0": 2,
+        "1": 2
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 1,
+      "current_player": 0,
+      "hand": "SQ, D9",
+      "public_cards": "None",
+      "chips_before": {
+        "0": 2,
+        "1": 2
+      },
+      "legal_actions": [
+        "raise",
+        "fold",
+        "check"
+      ],
+      "action_taken": "check",
+      "action_id": 3,
+      "chips_after": {
+        "0": 2,
+        "1": 2
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 2,
+      "current_player": 1,
+      "hand": "S9, DA",
+      "public_cards": "SK, HK, H6",
+      "chips_before": {
+        "0": 2,
+        "1": 2
+      },
+      "legal_actions": [
+        "raise",
+        "fold",
+        "check"
+      ],
+      "action_taken": "check",
+      "action_id": 3,
+      "chips_after": {
+        "0": 2,
+        "1": 2
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 3,
+      "current_player": 0,
+      "hand": "SQ, D9",
+      "public_cards": "SK, HK, H6",
+      "chips_before": {
+        "0": 2,
+        "1": 2
+      },
+      "legal_actions": [
+        "raise",
+        "fold",
+        "check"
+      ],
+      "action_taken": "raise",
+      "action_id": 1,
+      "chips_after": {
+        "0": 4,
+        "1": 2
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 4,
+      "current_player": 1,
+      "hand": "S9, DA",
+      "public_cards": "SK, HK, H6",
+      "chips_before": {
+        "0": 4,
+        "1": 2
+      },
+      "legal_actions": [
+        "call",
+        "raise",
+        "fold"
+      ],
+      "action_taken": "call",
+      "action_id": 0,
+      "chips_after": {
+        "0": 4,
+        "1": 4
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 5,
+      "current_player": 0,
+      "hand": "SQ, D9",
+      "public_cards": "SK, HK, H6, D6",
+      "chips_before": {
+        "0": 4,
+        "1": 4
+      },
+      "legal_actions": [
+        "raise",
+        "fold",
+        "check"
+      ],
+      "action_taken": "check",
+      "action_id": 3,
+      "chips_after": {
+        "0": 4,
+        "1": 4
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 6,
+      "current_player": 1,
+      "hand": "S9, DA",
+      "public_cards": "SK, HK, H6, D6",
+      "chips_before": {
+        "0": 4,
+        "1": 4
+      },
+      "legal_actions": [
+        "raise",
+        "fold",
+        "check"
+      ],
+      "action_taken": "fold",
+      "action_id": 2,
+      "chips_after": {
+        "0": 4,
+        "1": 4
+      },
+      "agent_info": {}
+    }
+  ],
+  "final_rewards": {
+    "0": 2.0,
+    "1": -2.0
+  },
+  "winner": 0,
+  "chips_history": {
+    "0": [
+      2,
+      2,
+      2,
+      2,
+      4,
+      4,
+      4
+    ],
+    "1": [
+      1,
+      2,
+      2,
+      2,
+      2,
+      4,
+      4
+    ]
+  },
+  "chips_at_start": {
+    "0": 216.0,
+    "1": 184.0
+  },
+  "chips_at_end": {
+    "0": 218.0,
+    "1": 182.0
+  },
+  "chips_initial_for_episode": {
+    "0": 216.0,
+    "1": 184.0
+  },
+  "rebuy_before_episode": {
+    "0": 0,
+    "1": 0
+  },
+  "total_rebuy_count": {
+    "0": 0,
+    "1": 0
+  }
+}

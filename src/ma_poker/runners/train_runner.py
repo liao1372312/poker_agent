@@ -65,6 +65,60 @@ def train(
             obs = obs_dict.get(cur, None)
             legal = env.legal_actions(cur)
             act = agents[cur].act(obs, legal)
+
+            # Broadcast opponent action events to agents that track opponent memory
+            raw = obs.get("raw_obs", {}) if isinstance(obs, dict) else {}
+            public_cards = raw.get("public_cards", []) if isinstance(raw, dict) else []
+            betting_round = 0
+            if len(public_cards) >= 3:
+                betting_round = 1
+            if len(public_cards) >= 4:
+                betting_round = 2
+            if len(public_cards) >= 5:
+                betting_round = 3
+
+            all_chips = raw.get("all_chips", []) if isinstance(raw, dict) else []
+            pot_size = float(sum(all_chips)) if isinstance(all_chips, list) and all_chips else 0.0
+
+            # Try to get human-readable action name from raw legal actions
+            raw_legal_actions = obs.get("raw_legal_actions", []) if isinstance(obs, dict) else []
+            action_name = str(act.action)
+            if isinstance(raw_legal_actions, list) and len(raw_legal_actions) == len(legal):
+                try:
+                    idx = legal.index(int(act.action))
+                    raw_a = raw_legal_actions[idx]
+                    if isinstance(raw_a, str):
+                        action_name = raw_a
+                    elif hasattr(raw_a, "name"):
+                        enum_name = str(raw_a.name).lower()
+                        if "check" in enum_name and "call" in enum_name:
+                            action_name = "check_call"
+                        elif "raise" in enum_name or "pot" in enum_name:
+                            action_name = "raise"
+                        elif "all" in enum_name and "in" in enum_name:
+                            action_name = "all_in"
+                        elif "fold" in enum_name:
+                            action_name = "fold"
+                        elif "call" in enum_name:
+                            action_name = "call"
+                        elif "check" in enum_name:
+                            action_name = "check"
+                        else:
+                            action_name = enum_name
+                except Exception:
+                    pass
+
+            context = {
+                "public_cards": public_cards,
+                "pot_size": pot_size,
+                "betting_round": betting_round,
+                "position": int(cur),
+                "bet_size": 0.0,
+            }
+            for pid, agent in agents.items():
+                if int(pid) != int(cur) and hasattr(agent, "update_opponent_action"):
+                    agent.update_opponent_action(int(cur), action_name, context)
+
             step_out = env.step({cur: act.action})
             for pid, r in step_out.rewards.items():
                 returns[int(pid)] += float(r)

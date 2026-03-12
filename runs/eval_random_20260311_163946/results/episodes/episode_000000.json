@@ -1,0 +1,110 @@
+{
+  "episode_id": 0,
+  "seed": null,
+  "num_players": 2,
+  "steps": [
+    {
+      "step_id": 0,
+      "current_player": 0,
+      "hand": "CJ, C9",
+      "public_cards": "None",
+      "chips_before": {
+        "0": 1,
+        "1": 2
+      },
+      "legal_actions": [
+        "call",
+        "raise",
+        "fold"
+      ],
+      "action_taken": "raise",
+      "action_id": 1,
+      "chips_after": {
+        "0": 4,
+        "1": 2
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 1,
+      "current_player": 1,
+      "hand": "DJ, C4",
+      "public_cards": "None",
+      "chips_before": {
+        "0": 4,
+        "1": 2
+      },
+      "legal_actions": [
+        "call",
+        "raise",
+        "fold"
+      ],
+      "action_taken": "call",
+      "action_id": 0,
+      "chips_after": {
+        "0": 4,
+        "1": 4
+      },
+      "agent_info": {}
+    },
+    {
+      "step_id": 2,
+      "current_player": 0,
+      "hand": "CJ, C9",
+      "public_cards": "D6, H9, C3",
+      "chips_before": {
+        "0": 4,
+        "1": 4
+      },
+      "legal_actions": [
+        "raise",
+        "fold",
+        "check"
+      ],
+      "action_taken": "fold",
+      "action_id": 2,
+      "chips_after": {
+        "0": 4,
+        "1": 4
+      },
+      "agent_info": {}
+    }
+  ],
+  "final_rewards": {
+    "0": -2.0,
+    "1": 2.0
+  },
+  "winner": 1,
+  "chips_history": {
+    "0": [
+      1,
+      4,
+      4
+    ],
+    "1": [
+      2,
+      2,
+      4
+    ]
+  },
+  "chips_at_start": {
+    "0": 200,
+    "1": 200
+  },
+  "chips_at_end": {
+    "0": 198.0,
+    "1": 202.0
+  },
+  "chips_initial_for_episode": {
+    "0": 200,
+    "1": 200
+  },
+  "rebuy_before_episode": {
+    "0": 0,
+    "1": 0
+  },
+  "total_rebuy_count": {
+    "0": 0,
+    "1": 0
+  }
+}

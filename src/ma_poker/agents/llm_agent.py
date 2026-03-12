@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -72,7 +73,7 @@ class LLMAgent(Agent):
     """
 
     api_url: str = "https://api.vveai.com/v1"
-    api_key: str = "sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d"
+    api_key: str = ""
     model: str = "gpt-4.1-mini"
     temperature: float = 0.7
     max_tokens: int = 6000  # High limit to allow for reasoning tokens + actual response
@@ -84,7 +85,11 @@ class LLMAgent(Agent):
         except ImportError:
             raise ImportError("openai library is required for LLM agents. Install with: pip install openai")
 
-        self._client = OpenAI(api_key=self.api_key, base_url=self.api_url)
+        resolved_api_key = self.api_key or os.getenv("OPENAI_API_KEY", "")
+        if not resolved_api_key:
+            raise ValueError("Missing API key. Set OPENAI_API_KEY or pass api_key in config.")
+
+        self._client = OpenAI(api_key=resolved_api_key, base_url=self.api_url)
 
     def reset(self) -> None:
         return

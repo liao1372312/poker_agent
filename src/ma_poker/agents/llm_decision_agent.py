@@ -9,6 +9,7 @@ This agent:
 from __future__ import annotations
 
 import json
+import os
 import re
 from collections import defaultdict
 from dataclasses import dataclass
@@ -57,7 +58,7 @@ class LLMDecisionAgent:
     """
     
     api_url: str = "https://api.vveai.com/v1"
-    api_key: str = "sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d"
+    api_key: str = ""
     model: str = "gpt-4.1-mini"
     temperature: float = 0.7
     max_tokens: int = 200
@@ -75,8 +76,12 @@ class LLMDecisionAgent:
             from openai import OpenAI
         except ImportError:
             raise ImportError("openai library is required. Install with: pip install openai")
-        
-        self._client = OpenAI(api_key=self.api_key, base_url=self.api_url)
+
+        resolved_api_key = self.api_key or os.getenv("OPENAI_API_KEY", "")
+        if not resolved_api_key:
+            raise ValueError("Missing API key. Set OPENAI_API_KEY or pass api_key in config.")
+
+        self._client = OpenAI(api_key=resolved_api_key, base_url=self.api_url)
         
         # 5 prompt types
         self._prompt_types = [
@@ -245,6 +250,8 @@ Make a strategic decision. Respond with the action name (e.g., 'call', 'raise', 
         legal_actions: List[int],
         opponent_stats: OpponentStats,
         top_hands_info: str = "",
+        forced_prompt_type: Optional[str] = None,
+        extra_context: str = "",
     ) -> ActOutput:
         """Make decision using LLM based on opponent analysis.
         
@@ -270,9 +277,13 @@ Make a strategic decision. Respond with the action name (e.g., 'call', 'raise', 
         # Discretize state for RL
         state = self._discretize_state(opponent_stats)
         
-        # Select prompt type using RL
-        prompt_type_idx = self._select_prompt_with_rl(state)
-        prompt_type = self._prompt_types[prompt_type_idx]
+        # Select prompt type using RL (or force externally, e.g., anchor/exploit gate)
+        if forced_prompt_type is not None and forced_prompt_type in self._prompt_types:
+            prompt_type = forced_prompt_type
+            prompt_type_idx = self._prompt_types.index(prompt_type)
+        else:
+            prompt_type_idx = self._select_prompt_with_rl(state)
+            prompt_type = self._prompt_types[prompt_type_idx]
         
         # Build prompt
         prompt_template = self._get_prompt_template(prompt_type)
@@ -310,6 +321,8 @@ Make a strategic decision. Respond with the action name (e.g., 'call', 'raise', 
         opponent_analysis += f"- Aggression: {opponent_stats.aggression:.2%}\n"
         opponent_analysis += f"- Fold Rate: {opponent_stats.fold_rate:.2%}\n"
         opponent_analysis += f"- Raise Rate: {opponent_stats.raise_rate:.2%}\n"
+        if extra_context:
+            opponent_analysis += f"\n{extra_context}\n"
         
         # Build prompt
         prompt = prompt_template.format(
@@ -337,6 +350,7 @@ Make a strategic decision. Respond with the action name (e.g., 'call', 'raise', 
                 "prompt_type": prompt_type,
                 "prompt_type_idx": prompt_type_idx,
                 "state": state,
+                "forced_prompt_type": forced_prompt_type,
                 "llm_response": response[:100],
             },
         )

@@ -27,7 +27,7 @@ seats:
   - type: llm_fixed_style_opponent
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-5-mini
       temperature: 0.7
       max_tokens: 6000

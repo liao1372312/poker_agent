@@ -1,0 +1,25 @@
+{
+  "episodes": 200,
+  "avg_return_per_player": [
+    0.11,
+    -0.11
+  ],
+  "total_rebuy_count": {
+    "0": 0,
+    "1": 0
+  },
+  "big_blind": 2,
+  "initial_chips_bb": 100,
+  "T": 100,
+  "player_metrics": {
+    "0": {
+      "bb_per_100": 5.5,
+      "min_br": 90.0
+    },
+    "1": {
+      "bb_per_100": -5.5,
+      "min_br": 76.5
+    }
+  },
+  "belief_accuracy_metrics": {}
+}

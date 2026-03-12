@@ -20,7 +20,7 @@ seats:
   - type: ours
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-5-mini
       temperature: 0.7
       max_tokens: 6000
@@ -33,13 +33,27 @@ seats:
       # Belief update settings
       belief_update_rate: 0.1  # Learning rate for belief updates
       portrait_update_rate: 0.01  # Learning rate for portrait vector updates
+      # BEGSA-aligned memory + EV-gate settings
+      hand_memory_max_size: 2000
+      gate_learning_rate: 0.02
+      gate_ev_threshold: 0.05
+      cf_rollout_hands: 128
+      uncertainty_penalty_coef: 0.05
+      deviation_penalty_lambda: 0.02
+      ppo_clip_eps: 0.2
+      ppo_epochs: 4
+      ppo_gamma: 0.99
+      ppo_gae_lambda: 0.95
+      ppo_entropy_coef: 0.01
+      ppo_value_coef: 0.5
+      ppo_value_lr: 0.02
       seed: 0
   
   # Player 1: LLM Fixed-Style Opponent (Nit/Rock)
   - type: llm_fixed_style_opponent
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-5-mini  # GPT-5-mini as specified
       temperature: 0.7
       max_tokens: 6000  # High limit for reasoning tokens + response

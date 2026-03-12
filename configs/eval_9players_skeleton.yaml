@@ -36,35 +36,51 @@ seats:
   - type: llm_only
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-4.1-mini
       temperature: 0.7
       seed: 5
   - type: llm_heuristic_range
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-4.1-mini
       temperature: 0.7
       seed: 6
   - type: llm_static_belief
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-4.1-mini
       temperature: 0.7
       seed: 7
   - type: ours
     params:
       api_url: https://api.vveai.com/v1
-      api_key: sk-nY2KbJ4rtdbjwHyK9eCe56787c3e451a9fE4Ef81274e8a9d
+      api_key: ${OPENAI_API_KEY}
       model: gpt-4.1-mini
       temperature: 0.7
       max_tokens: 200
-      memory_size: 100          # Max memories to keep
-      learning_window: 20       # Episodes to analyze for evolution
-      evolution_interval: 10    # Update prompt every N episodes
-      min_episodes_for_evolution: 5
+      # RL settings for prompt selection
+      learning_rate: 0.1
+      discount_factor: 0.9
+      epsilon: 0.1
+      epsilon_decay: 0.995
+      epsilon_min: 0.05
+      # BEGSA-aligned memory + EV-gate settings
+      hand_memory_max_size: 2000
+      gate_learning_rate: 0.02
+      gate_ev_threshold: 0.05
+      cf_rollout_hands: 128
+      uncertainty_penalty_coef: 0.05
+      deviation_penalty_lambda: 0.02
+      ppo_clip_eps: 0.2
+      ppo_epochs: 4
+      ppo_gamma: 0.99
+      ppo_gae_lambda: 0.95
+      ppo_entropy_coef: 0.01
+      ppo_value_coef: 0.5
+      ppo_value_lr: 0.02
       seed: 8
 
 output:
